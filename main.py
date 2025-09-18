@@ -46,6 +46,8 @@ def create_issue(ticket: Ticket):
 
     response = requests.post(url, headers=headers, json=payload)
 
+    print("request sent")
+
     if response.status_code == 201:
         return response.json()
     else:
