@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 import requests
 import os
 from dotenv import load_dotenv
@@ -12,6 +13,18 @@ GITHUB_OWNER = os.getenv("GITHUB_OWNER")
 GITHUB_REPO = os.getenv("GITHUB_REPO")
 
 app = FastAPI()
+
+# origins = [
+#     "http://192.168.5.233:8443/"
+# ]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],        # allow these origins
+    allow_credentials=True,
+    allow_methods=["*"],          # allow all HTTP methods
+    allow_headers=["*"],          # allow all headers
+)
 
 # Request body schema
 class Ticket(BaseModel):
