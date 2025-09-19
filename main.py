@@ -32,7 +32,7 @@ class Ticket(BaseModel):
     description: str
     labels: list[str] = []
     assignees: list[str] = []
-    ticket_id: str
+    # ticket_id: str
 
 @app.get("/")
 def home():
@@ -42,7 +42,7 @@ def home():
 def create_issue(ticket: Ticket):
     url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/issues"
 
-    tms_url = f"https://192.168.5.233:8443/ords/wstms/details/tms-ticket?nu_ticket_id={ticket.ticket_id}"
+    # tms_url = f"https://192.168.5.233:8443/ords/wstms/details/tms-ticket?nu_ticket_id={ticket.ticket_id}"
 
     headers = {
         "Authorization": f"token {GITHUB_TOKEN}",
@@ -54,7 +54,7 @@ def create_issue(ticket: Ticket):
         "body": ticket.description,
         "labels": ticket.labels,
         "assignees": ticket.assignees,
-        "ticket id": ticket.ticket_id
+        # "ticket id": ticket.ticket_id
     }
 
     response = requests.post(url, headers=headers, json=payload)
