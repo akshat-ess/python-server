@@ -5,7 +5,6 @@ import requests
 import os
 from dotenv import load_dotenv
 
-# Load env variables
 load_dotenv()
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -20,10 +19,10 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],        # allow these origins
+    allow_origins=["*"],    
     allow_credentials=True,
-    allow_methods=["*"],          # allow all HTTP methods
-    allow_headers=["*"],          # allow all headers
+    allow_methods=["*"],         
+    allow_headers=["*"],         
 )
 
 # Request body schema
@@ -32,7 +31,6 @@ class Ticket(BaseModel):
     description: str
     labels: list[str] = []
     assignees: list[str] = []
-    # ticket_id: str
 
 @app.get("/")
 def home():
@@ -54,7 +52,6 @@ def create_issue(ticket: Ticket):
         "body": ticket.description,
         "labels": ticket.labels,
         "assignees": ticket.assignees,
-        # "ticket id": ticket.ticket_id
     }
 
     response = requests.post(url, headers=headers, json=payload)
