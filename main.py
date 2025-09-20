@@ -54,11 +54,19 @@ def create_issue(ticket: Ticket):
         "assignees": ticket.assignees,
     }
 
-    response = requests.post(url, headers=headers, json=payload)
+    try:
 
-    print("request sent")
+        response = requests.post(url, headers=headers, json=payload)
+        print("request sent")
 
-    if response.status_code == 201:
-        return response.json()
-    else:
-        raise HTTPException(status_code=response.status_code, detail=response.json())
+        if response.status_code == 201:
+            return response.json()
+        else:
+            raise HTTPException(status_code=response.status_code, detail=response.json())
+
+    except requests.exceptions.Timeout:
+        raise HTTPException(status_code=504, detail="GitHub API request timed out")
+    except requests.exceptions.ConnectionError:
+        raise HTTPException(status_code=502, detail="Failed to connect to GitHub API")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
